@@ -54,7 +54,7 @@ export const LocalMultiSelect = (props: LocalMultiSelectProps) => {
                 value={props.value}
                 initiallyOpened={false}
                 size="sm"
-                limit={20}
+                limit={200}
             />
         </>
     )
