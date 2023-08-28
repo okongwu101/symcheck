@@ -4,6 +4,7 @@
 import { useDisclosure } from '@mantine/hooks';
 import { Collapse, Card, Button } from '@mantine/core';
 import { IconFileDescription, IconX } from '@tabler/icons-react';
+import SectionCard from './sectionCard';
 
 
 
@@ -14,15 +15,15 @@ export default function Description() {
         <div className='px-4 mb-6'>
 
             <div>
-                <button 
-                className=' py-2 px-8 rounded-lg mb-2 bg-orange-50 font-mono font-semibold text-sm lg:text-base '
-                onClick={toggle}
+                <button
+                    className=' py-2 px-8 rounded-lg mb-2 bg-orange-50 font-mono font-semibold text-sm lg:text-base '
+                    onClick={toggle}
                 >
                     Info
                 </button>
             </div>
 
-        
+
 
 
 
@@ -34,12 +35,8 @@ export default function Description() {
                     className=''
                 >
 
-                    <Card
-                        shadow="sm"
-                        padding="xl"
-                        className='border border-red-800 rounded-lg'
-                        onClick={toggle}
-                    >
+                    <SectionCard onClick={toggle}>
+                        {/* <div> */}
                         <div className='flex justify-end'>
                             <IconX
 
@@ -49,16 +46,15 @@ export default function Description() {
 
 
                         <p className='font-mono text-xs lg:text-sm text-justify mt-4 font-medium'>
-                            SymCHeck provides differential diagnoses based on selected symptoms. The app also recommends specialties that the user can refer to specialist care based on the diagnoses.
+                            SymCHeck provides differential diagnoses based on selected symptoms. The app also recommends specialties that the user can refer to, based on the diagonses, for specialist care.
 
                         </p>
                         <div className='mt-4 font-mono text-xs lg:text-base'>
                             <span className=' text-orange-400 pr-4'>NB:</span><span>The app uses dummy data.</span>
                         </div>
-                    </Card>
+                        {/* </div> */}
 
-
-
+                    </SectionCard>
                 </Collapse>
             </div>
 

@@ -1,19 +1,20 @@
 'use client'
 
 import { GenderSelectData } from "@/lib/dataSource/patientGenderDataSource"
-import ErrorText from "./errorText"
 import { LocalMultiSelect, SymptomsInterface, ValueLabelSelect } from "./selectFormComponents"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { allDiagnosisAtom, errorMessageAtom } from "@/lib/atoms"
 import { useAtom } from "jotai"
 import { YearPickerInput } from '@mantine/dates';
 import axios from "axios"
 import dayjs from "dayjs"
+import SectionCard from "./sectionCard"
+import { ErrorText } from "./texts"
 
 
 
-export default function AllDiagnosis({ token }: { token: string}) {
+export default function AllDiagnosis({ token }: { token: string }) {
 
 
     const [birthYear, setBirthYear] = useState<Date | null>(null);
@@ -29,12 +30,10 @@ export default function AllDiagnosis({ token }: { token: string}) {
     const date = dayjs(dateString)
     const year = date.year().toString()
 
-  
 
-    const [fetchedDiagnosis, setFetchedDiagnosis] = useAtom(allDiagnosisAtom)
 
-    console.log('this is fetched diagnosis', fetchedDiagnosis)
- 
+    const [, setFetchedDiagnoses] = useAtom(allDiagnosisAtom)
+
 
     // notification atoms
     const [, setErrorMessage] = useAtom(errorMessageAtom)
@@ -53,9 +52,6 @@ export default function AllDiagnosis({ token }: { token: string}) {
 
     }
 
-    // https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=[9,10,11]&gender=male&year_of_birth=1982&token=eyJ0eXAiOiJ
-
-    // &format=json&language=en-gb
 
     // Get diagnosis
     const getDiagnoses = async () => {
@@ -77,63 +73,64 @@ export default function AllDiagnosis({ token }: { token: string}) {
 
             console.log('allDiag', allDiag)
 
-            setFetchedDiagnosis(allDiag)
+            setFetchedDiagnoses(allDiag)
         }
     }
     return (
         <div className='px-4'>
 
-            <div className="grid grid-cols-12 gap-x-4 mb-8 mx-auto">
-                <div className="col-span-6">
-                    <div className=''>Birth year</div>
+            <SectionCard>
+                <div className="grid grid-cols-12 gap-x-4 mb-8 mx-auto">
+                    <div className="col-span-6">
+                        <div className=''>Birth year</div>
 
-                    <YearPickerInput
-                        // label="Pick date"
-                        // placeholder="Pick date"
-                        value={birthYear}
-                        onChange={setBirthYear}
-                       
-                        mx="auto"
-                        maw={400}
-                        clearable
-                        maxDate={new Date()}
-                    />
-                    {birthYear === null && <ErrorText message='Required' />}
+                        <YearPickerInput
+                            // label="Pick date"
+                            // placeholder="Pick date"
+                            value={birthYear}
+                            onChange={setBirthYear}
+
+                            mx="auto"
+                            maw={400}
+                            clearable
+                            maxDate={new Date()}
+                        />
+                        {birthYear === null && <ErrorText message='Required' />}
+                    </div>
+
+                    <div className="col-span-6">
+                        <div className=''>Gender</div>
+                        <ValueLabelSelect
+                            data={GenderSelectData}
+                            onChange={(value: any) => setPatientGender(value)}
+                        />
+                        {patientGender === "" && <ErrorText message='Required' />}
+                    </div>
+
                 </div>
 
-                <div className="col-span-6">
-                    <div className=''>Gender</div>
-                    <ValueLabelSelect
-                        data={GenderSelectData}
-                        onChange={(value: any) => setPatientGender(value)}
+                <div>
+                    <div>Symptoms</div>
+                    <LocalMultiSelect
+                        data={symptomsData}
+                        // onChange={}
+                        onChange={(values: any) => {
+                            setSymptoms((values).map((value: string) => symptomsData.find((item: SymptomsInterface) => item.ID === value)))
+                        }}
+                        value={symptoms ? symptoms.map((c) => c.ID) : []}
                     />
-                    {patientGender === "" && <ErrorText message='Required' />}
+                    {symptoms === undefined && <ErrorText message='Required' />}
                 </div>
 
-            </div>
-
-            <div>
-                <div>Symptoms</div>
-                <LocalMultiSelect
-                    data={symptomsData}
-                    // onChange={}
-                    onChange={(values: any) => {
-                        setSymptoms((values).map((value: string) => symptomsData.find((item: SymptomsInterface) => item.ID === value)))
-                    }}
-                    value={symptoms ? symptoms.map((c) => c.ID) : []}
-                />
-                {symptoms === undefined && <ErrorText message='Required' />}
-            </div>
-
-            <div className="flex justify-end mt-4">
-                <button 
-                className="bg-blue-400 hover:bg-green-400 px-4 py-2 rounded-lg font-mono text-sm lg:text-base font-semibold"
-                onClick={() => getDiagnoses()}
-                >
-                    Get diagnosis
-                </button>
-            </div>
-
+                <div className="flex justify-end mt-8">
+                    <button
+                        className="bg-blue-400 hover:bg-green-400 px-4 py-2 rounded-lg font-mono text-sm lg:text-base font-semibold"
+                        onClick={() => getDiagnoses()}
+                    >
+                        Get diagnosis
+                    </button>
+                </div>
+            </SectionCard>
         </div>
     )
 }

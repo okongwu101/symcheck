@@ -1,5 +1,6 @@
 import AllDiagnosis from "@/components/allDiagnosis";
 import Description from "@/components/description";
+import DisplayDiagnoses from "@/components/displayDiagnoses";
 
 
 import CryptoJS from "crypto-js";
@@ -13,7 +14,7 @@ export default async function Diagnosis() {
 
 
     const res = await fetch(`${process.env.AUTH_BASE}`, {
-        next: { revalidate: 7200 },
+        next: { revalidate: 7000 },
         method: "POST",
         headers: {
             Authorization:  `Bearer ${process.env.SANDBOX_USERNAME}:${hashString}`,
@@ -37,6 +38,12 @@ export default async function Diagnosis() {
             <div>
                 <AllDiagnosis token={token} />
             </div>
+
+            <div>
+                <DisplayDiagnoses />
+            </div>
+
+            <div className="mt-16"></div>
 
         </div>
     )
