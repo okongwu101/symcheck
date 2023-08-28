@@ -5,6 +5,7 @@ import { useAtom } from "jotai"
 import SectionCard from "./sectionCard"
 import { DiagnosisInterface } from "@/lib/interfaces"
 import { Card } from "@mantine/core"
+import { LabelText } from "./texts"
 
 export default function DisplayDiagnoses() {
     const [fetchedDiagnoses, ] = useAtom<DiagnosisInterface[]>(allDiagnosisAtom)
@@ -30,8 +31,8 @@ export default function DisplayDiagnoses() {
                                     className="border border-blue-200 p-4 w-full"
                                     >
                                         <div>
-                                            <div>Diagnosis: {item.Issue.Name}</div>
-                                            <div>Accuracy: {item.Issue.Accuracy}</div>
+                                            <div><LabelText text="Diagnoses:"/> {item.Issue.Name}</div>
+                                            <div><LabelText text="Accuracy:"/> {item.Issue.Accuracy}</div>
                                             {/* <div>{item.Issue.Name}</div>
                                             <div>{item.Issue.Name}</div> */}
                                         </div>

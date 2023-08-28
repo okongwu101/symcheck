@@ -10,7 +10,7 @@ import { YearPickerInput } from '@mantine/dates';
 import axios from "axios"
 import dayjs from "dayjs"
 import SectionCard from "./sectionCard"
-import { ErrorText } from "./texts"
+import { ErrorText, LabelText } from "./texts"
 
 
 
@@ -71,8 +71,6 @@ export default function AllDiagnosis({ token }: { token: string }) {
 
             const allDiag = await res.data
 
-            console.log('allDiag', allDiag)
-
             setFetchedDiagnoses(allDiag)
         }
     }
@@ -82,7 +80,7 @@ export default function AllDiagnosis({ token }: { token: string }) {
             <SectionCard>
                 <div className="grid grid-cols-12 gap-x-4 mb-8 mx-auto">
                     <div className="col-span-6">
-                        <div className=''>Birth year</div>
+                        <LabelText text="Birth year"/>
 
                         <YearPickerInput
                             // label="Pick date"
@@ -95,22 +93,24 @@ export default function AllDiagnosis({ token }: { token: string }) {
                             clearable
                             maxDate={new Date()}
                         />
-                        {birthYear === null && <ErrorText message='Required' />}
+                        {birthYear === null && <ErrorText text='Required' />}
                     </div>
 
                     <div className="col-span-6">
-                        <div className=''>Gender</div>
+                       
+                        <LabelText text="Gender"/>
                         <ValueLabelSelect
                             data={GenderSelectData}
                             onChange={(value: any) => setPatientGender(value)}
                         />
-                        {patientGender === "" && <ErrorText message='Required' />}
+                        {patientGender === "" && <ErrorText text='Required' />}
                     </div>
 
                 </div>
 
                 <div>
-                    <div>Symptoms</div>
+                  
+                    <LabelText text="Symptoms"/>
                     <LocalMultiSelect
                         data={symptomsData}
                         // onChange={}
@@ -119,7 +119,7 @@ export default function AllDiagnosis({ token }: { token: string }) {
                         }}
                         value={symptoms ? symptoms.map((c) => c.ID) : []}
                     />
-                    {symptoms === undefined && <ErrorText message='Required' />}
+                    {symptoms === undefined && <ErrorText text='Required' />}
                 </div>
 
                 <div className="flex justify-end mt-8">
