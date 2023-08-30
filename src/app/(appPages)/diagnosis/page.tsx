@@ -31,6 +31,10 @@ export default async function Diagnosis() {
     return (
         <div className="lg:container mx-auto lg:px-52">
 
+            <div className="w-400">
+                <h1>{token}</h1>
+            </div>
+
             <div className="text-base lg:text-2xl font-medium text-center mt-4 mb-6">
                 Diagnosis Checker
 
