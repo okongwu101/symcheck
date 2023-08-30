@@ -4,17 +4,24 @@ import { GenderSelectData } from "@/lib/dataSource/patientGenderDataSource"
 import { LocalMultiSelect, SymptomsInterface, ValueLabelSelect } from "./selectFormComponents"
 import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { allDiagnosisAtom, errorMessageAtom } from "@/lib/atoms"
+import { allDiagnosisAtom, errorMessageAtom, tokenAtom } from "@/lib/atoms"
 import { useAtom } from "jotai"
 import { YearPickerInput } from '@mantine/dates';
 import axios from "axios"
 import dayjs from "dayjs"
 import SectionCard from "./sectionCard"
 import { ErrorText, LabelText } from "./texts"
+import CryptoJS from "crypto-js";
 
 
 
-export default function AllDiagnosis({ token }: { token: string }) {
+
+
+export default function AllDiagnosis({ token } : { token: string}) {
+
+    // get hash string
+    // const uriHash = CryptoJS.HmacMD5(`${process.env.AUTH_BASE}`, `${process.env.SANDBOX_PASSWORD}`);
+    // const hashString = uriHash.toString(CryptoJS.enc.Base64)
 
 
     const [birthYear, setBirthYear] = useState<Date | null>(null);
@@ -42,8 +49,11 @@ export default function AllDiagnosis({ token }: { token: string }) {
     // fetch symptoms
     const { data: symptomsData } = useQuery<SymptomsInterface[]>({
         queryKey: [`${process.env.NEXT_PUBLIC_SYMPTOMS_BASE}token=${token}&format=json&language=en-gb`],
-        initialData: [{ ID: "", Name: "" }]
+        initialData: [{ ID: "", Name: "" }],
+        enabled: token !== ""
     })
+
+
 
     // get array of symptoms ID
     let IDArray: string[][] = []
@@ -76,6 +86,8 @@ export default function AllDiagnosis({ token }: { token: string }) {
     }
     return (
         <div className='px-4'>
+
+            <h1>{token}</h1>
 
             <SectionCard>
                 <div className="grid grid-cols-12 gap-x-4 mb-8 mx-auto">

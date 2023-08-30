@@ -14,16 +14,18 @@ export default async function Diagnosis() {
 
 
     const res = await fetch(`${process.env.AUTH_BASE}`, {
-        next: { revalidate: 7000 },
+        next: { revalidate: 7200 },
         method: "POST",
         headers: {
-            Authorization:  `Bearer ${process.env.SANDBOX_USERNAME}:${hashString}`,
+            Authorization: `Bearer ${process.env.SANDBOX_USERNAME}:${hashString}`,
             "Content-Type": "application/json"
         }
     })
 
     const data = await res.json()
-    const token = await data.Token
+     const token = await data.Token
+
+
 
 
     return (

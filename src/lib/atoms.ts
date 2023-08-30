@@ -11,3 +11,6 @@ export const warnMessageAtom = atom<string>('')
 
 
 export const allDiagnosisAtom = atom<DiagnosisInterface[]>([])
+
+
+export const tokenAtom = atom<string>("")

@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import axios from "axios";
 import { useAtom } from "jotai";
 import { ReactNode, useEffect } from "react"
+import { Provider } from "jotai";
 
 export default function Providers({children}: {children: ReactNode}) {
 
@@ -175,15 +176,19 @@ export default function Providers({children}: {children: ReactNode}) {
     return (
         <>
         <QueryClientProvider client={queryClient}>
+          
             <MantineProvider withGlobalStyles withNormalizeCSS>
-            <Notifications
-              position="bottom-left"
-              zIndex={2077}
-              limit={2}
-              autoClose={6000}
-            />
-                {children}
+              <Notifications
+                position="bottom-left"
+                zIndex={2077}
+                limit={2}
+                autoClose={6000}
+              />
+            <Provider> {children}</Provider>
+             
             </MantineProvider>
+        
+            
         </QueryClientProvider>
         </>
     )

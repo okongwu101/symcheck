@@ -17,24 +17,28 @@ export default function DisplayDiagnoses() {
             {fetchedDiagnoses.length !== 0 && (
                 <div className="px-4 mt-8">
                     <SectionCard>
-                        <div className="text-center">Diagnoses</div>
+                        <div className="text-center text-sm font-sans font-semibold">Diagnoses</div>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-2 gap-y-4 mt-4">
                             {fetchedDiagnoses.map((item) => (
                                 <div key={item.Issue.Ranking}>
                                     <Card className="border border-blue-200 p-4 w-full rounded-lg">
                                         <div>
                                             <div>
-                                                <LabelText text="Diagnoses:" />{" "}
+                                                <LabelText text="Diagnosis:" />{" "}
                                                 <ValuesText text={`${item.Issue.Name}`} />
                                             </div>
                                             <div>
                                                 <LabelText text="Accuracy:" />
                                                 <span className={`
-                                                text-xs lg:text-sm font-mono tracking-wide px-4 bg-green-200 rounded-lg py-2
+                                                text-xs font-semibold font-mono font tracking-wide px-4 rounded-lg py-2 mx-6
+                                                ${item.Issue.Accuracy >= 85 ? "bg-green-200" : null}
+                                                ${item.Issue.Accuracy >= 65 && item.Issue.Accuracy < 85 ? "bg-orange-200" : null }
+                                                ${item.Issue.Accuracy >= 50 && item.Issue.Accuracy < 65 ? "bg-amber-200" : null}
+                                                ${item.Issue.Accuracy < 50 ? "bg-red-200" : null}
                                                 `}>
                                                     <span
                                                     >
-                                                    {item.Issue.Accuracy}
+                                                        {item.Issue.Accuracy.toFixed(1)}%
                                                     </span>
                                                 
                                                 </span>

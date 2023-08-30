@@ -20,7 +20,7 @@ export function ErrorText(props: TextPropTypes) {
 
 export const LabelText = (props: TextPropTypes) => {
     return(
-        <span className="text-xs lg:text-sm font-sans font-medium">
+        <span className="text-xs font-sans font-semibold tracking-wider">
             { props.text}
         </span>
     )
@@ -28,7 +28,7 @@ export const LabelText = (props: TextPropTypes) => {
 
 export const ValuesText = (props: TextPropTypes) => {
     return(
-        <span className="text-xs lg:text-sm font-mono font-semibold tracking-wide px-4 text-rose-950">
+        <span className="text-xs font-mono font-semibold tracking-wide px-4 text-rose-950">
             { props.text }
         </span>
     )
