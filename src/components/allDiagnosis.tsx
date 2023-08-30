@@ -87,7 +87,11 @@ export default function AllDiagnosis({ token } : { token: string}) {
     return (
         <div className='px-4'>
 
-            <h1>{token}</h1>
+            <div className="w-400">
+                <h1>{token}</h1>
+            </div>
+
+            
 
             <SectionCard>
                 <div className="grid grid-cols-12 gap-x-4 mb-8 mx-auto">
