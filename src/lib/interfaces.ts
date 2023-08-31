@@ -18,3 +18,22 @@ export interface Specialisation {
     Name:         string;
     SpecialistID: number;
 }
+
+export interface DiagnosisDescriptionInterface {
+  Description: string;
+  DescriptionShort: string;
+  MedicalCondition: string;
+  Name: string;
+  PossibleSymptoms: string;
+  ProfName: string;
+  Synonyms: string | null;
+  TreatmentDescription: string;
+}
+
+
+export interface SpecialistsInterface {
+  ID: number;
+  Name: string;
+  Accuracy: number;
+  Ranking: number;
+}

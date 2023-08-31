@@ -1,6 +1,6 @@
 'use client'
 
-import { SymptomsInterface } from "@/components/selectFormComponents"
+
 import { atom } from "jotai"
 import { DiagnosisInterface } from "./interfaces"
 
@@ -12,5 +12,10 @@ export const warnMessageAtom = atom<string>('')
 
 export const allDiagnosisAtom = atom<DiagnosisInterface[]>([])
 
+export const diagnosisIDAtom = atom<number>(0)
 
-export const tokenAtom = atom<string>("")
+export const genderAtom = atom<string>("")
+
+export const yearOfBirthAtom = atom<string>("")
+
+

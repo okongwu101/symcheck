@@ -1,14 +1,8 @@
-import AllDiagnosis from "@/components/allDiagnosis";
-import Description from "@/components/description";
-import DisplayDiagnoses from "@/components/displayDiagnoses";
+import GetSpecialistsClient from "@/components/getspecialistClient";
 import { PageTitle } from "@/components/texts";
-
-
 import CryptoJS from "crypto-js";
 
-
-export default async function Diagnosis() {
-
+export default async function GetSpecialists() {
     // obtain the token for fetch request to the api
     const uriHash = CryptoJS.HmacMD5(`${process.env.AUTH_BASE}`, `${process.env.NEXT_PUBLIC_PASSWORD}`);
     const hashString = uriHash.toString(CryptoJS.enc.Base64)
@@ -24,27 +18,12 @@ export default async function Diagnosis() {
     })
 
     const data = await res.json()
-     const token = await data.Token
-
-
-
-
-    return (
+    const token = await data.Token
+    return(
         <div className="lg:container mx-auto lg:px-52">
-
-            <PageTitle text="Diagnosis checker" />
-            <Description />
-
-            <div>
-                <AllDiagnosis token={token} />
-            </div>
-
-            <div>
-                <DisplayDiagnoses />
-            </div>
-
+            <PageTitle text="Recommended specialists" />
+            <GetSpecialistsClient token={token} />
             <div className="mt-16"></div>
-
         </div>
     )
 }

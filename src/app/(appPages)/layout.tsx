@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { IconHeartRateMonitor } from '@tabler/icons-react';
 import { ReactNode } from "react";
+import { IconBuildingHospital } from '@tabler/icons-react';
 
 export default function AppPagesLayout({children}: {children: ReactNode}) {
     return(
@@ -15,7 +15,7 @@ export default function AppPagesLayout({children}: {children: ReactNode}) {
                     <Link
                         href="/diagnosis"
                     >
-                        <IconHeartRateMonitor />
+                        <IconBuildingHospital />
                     </Link>
                 </div>
             </div>

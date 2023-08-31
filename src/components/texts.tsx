@@ -28,18 +28,34 @@ export const LabelText = (props: TextPropTypes) => {
 
 export const ValuesText = (props: TextPropTypes) => {
     return(
-        <span className="text-xs font-mono font-semibold tracking-wide px-4 text-rose-950">
+        <span className="text-xs font-mono font-semibold tracking-wide text-rose-950">
             { props.text }
         </span>
     )
 }
 
 export const AccuracyText = (props: TextPropTypes) => {
-    const [fetchedDiagnoses, ] = useAtom<DiagnosisInterface[]>(allDiagnosisAtom)
     
     return(
         <span
         className=""
         >{props.text}</span>
     )
+}
+
+export const PageTitle = (props: TextPropTypes) => {
+    return(
+        <div className="text-center text-sm font-sans font-semibold my-6">
+            { props.text}
+        </div>
+    )
+}
+
+export const AccordionPanelText = (props: TextPropTypes) => {
+    return(
+        <div className="text-xs font-mono font-semibold tracking-wider px-6 text-justify py-4 leading-7">
+            {props.text}
+        </div>
+    )
+    
 }

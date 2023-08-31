@@ -1,38 +1,49 @@
 "use client";
 
-import { allDiagnosisAtom } from "@/lib/atoms";
+import { allDiagnosisAtom, diagnosisIDAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import SectionCard from "./sectionCard";
 import { DiagnosisInterface } from "@/lib/interfaces";
 import { Card } from "@mantine/core";
-import { LabelText, ValuesText } from "./texts";
+import { LabelText, PageTitle, ValuesText } from "./texts";
+import Link from "next/link";
 
 export default function DisplayDiagnoses() {
     const [fetchedDiagnoses] = useAtom<DiagnosisInterface[]>(allDiagnosisAtom);
 
-    console.log("this is fetched diagnosis", fetchedDiagnoses);
+   
+
+    // fetch diagnosis details and pass it to its atom
+    const [, setDiagnosisID] = useAtom(diagnosisIDAtom)
+
+   
+
 
     return (
         <div>
             {fetchedDiagnoses.length !== 0 && (
                 <div className="px-4 mt-8">
                     <SectionCard>
-                        <div className="text-center text-sm font-sans font-semibold">Diagnoses</div>
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-2 gap-y-4 mt-4">
+                        <PageTitle text="Diagnoses" />
+                        <div className={`
+                        grid grid-cols-1 lg:grid-cols-2 gap-x-2 gap-y-4 mt-4
+                        `}>
                             {fetchedDiagnoses.map((item) => (
                                 <div key={item.Issue.Ranking}>
-                                    <Card className="border border-blue-200 p-4 w-full rounded-lg">
-                                        <div>
-                                            <div>
-                                                <LabelText text="Diagnosis:" />{" "}
+                                    <Card className="border border-blue-200 w-full p-4 rounded-lg
+                                    flex flex-row justify-between gap-4 px-4
+                                    ">
+                                        <div className="flex flex-col gap-4">
+                                            <div className="flex flex-row gap-2 lg:gap-6">
+                                                <LabelText text="Diagnosis:" />
                                                 <ValuesText text={`${item.Issue.Name}`} />
                                             </div>
-                                            <div>
+                                            <div className="flex flex-row gap-2 lg:gap-6 items-baseline">
                                                 <LabelText text="Accuracy:" />
                                                 <span className={`
-                                                text-xs font-semibold font-mono font tracking-wide px-4 rounded-lg py-2 mx-6
+                                                text-xs font-semibold font-mono font tracking-wide px-4 rounded-lg py-2
                                                 ${item.Issue.Accuracy >= 85 ? "bg-green-200" : null}
-                                                ${item.Issue.Accuracy >= 65 && item.Issue.Accuracy < 85 ? "bg-orange-200" : null }
+                                                ${item.Issue.Accuracy >= 65 && item.Issue.Accuracy < 85 ? "bg-orange-200" : null}
                                                 ${item.Issue.Accuracy >= 50 && item.Issue.Accuracy < 65 ? "bg-amber-200" : null}
                                                 ${item.Issue.Accuracy < 50 ? "bg-red-200" : null}
                                                 `}>
@@ -40,11 +51,34 @@ export default function DisplayDiagnoses() {
                                                     >
                                                         {item.Issue.Accuracy.toFixed(1)}%
                                                     </span>
-                                                
+
                                                 </span>
-                                                
-                                                
+
+
                                             </div>
+                                        </div>
+                                        <div className="flex flex-col gap-4">
+
+                                            <Link
+                                            href="/diagnosis-details"
+                                                onClick={() => setDiagnosisID(item.Issue.ID)}
+                                                className="text-xs font-sans font-semibold tracking-wider text-blue-600"
+                                            >
+                                                Read more
+                                            </Link>
+
+
+                                            <Link
+                                                href="/specialists"
+                                                onClick={() => setDiagnosisID(item.Issue.ID)}
+                                                className="text-xs font-sans font-semibold tracking-wider text-blue-600"
+                                            >
+                                                Doctors
+                                            </Link>
+
+                    
+                                            {/* <div className="text-xs font-sans font-semibold tracking-wider text-blue-600">Doctors</div> */}
+
                                         </div>
                                     </Card>
                                 </div>

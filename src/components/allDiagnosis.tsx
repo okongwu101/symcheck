@@ -4,24 +4,17 @@ import { GenderSelectData } from "@/lib/dataSource/patientGenderDataSource"
 import { LocalMultiSelect, SymptomsInterface, ValueLabelSelect } from "./selectFormComponents"
 import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { allDiagnosisAtom, errorMessageAtom, tokenAtom } from "@/lib/atoms"
+import { allDiagnosisAtom, errorMessageAtom, genderAtom, yearOfBirthAtom } from "@/lib/atoms"
 import { useAtom } from "jotai"
 import { YearPickerInput } from '@mantine/dates';
 import axios from "axios"
 import dayjs from "dayjs"
 import SectionCard from "./sectionCard"
 import { ErrorText, LabelText } from "./texts"
-import CryptoJS from "crypto-js";
-
-
 
 
 
 export default function AllDiagnosis({ token } : { token: string}) {
-
-    // get hash string
-    // const uriHash = CryptoJS.HmacMD5(`${process.env.AUTH_BASE}`, `${process.env.SANDBOX_PASSWORD}`);
-    // const hashString = uriHash.toString(CryptoJS.enc.Base64)
 
 
     const [birthYear, setBirthYear] = useState<Date | null>(null);
@@ -29,6 +22,11 @@ export default function AllDiagnosis({ token } : { token: string}) {
     const [symptoms, setSymptoms] = useState<SymptomsInterface[]>()
 
 
+    const [, setGenderAtom] = useAtom(genderAtom)
+    const [, setYearOfBirthAtom] = useAtom(yearOfBirthAtom)
+    const [, setFetchedDiagnoses] = useAtom(allDiagnosisAtom)
+
+ 
     /*
         format the birthYear
         i.e. retrieve the actual year from the date object
@@ -36,10 +34,6 @@ export default function AllDiagnosis({ token } : { token: string}) {
     const dateString = birthYear?.toDateString()
     const date = dayjs(dateString)
     const year = date.year().toString()
-
-
-
-    const [, setFetchedDiagnoses] = useAtom(allDiagnosisAtom)
 
 
     // notification atoms
@@ -92,18 +86,17 @@ export default function AllDiagnosis({ token } : { token: string}) {
             
 
             <SectionCard>
-                <div className="grid grid-cols-12 gap-x-4 mb-8 mx-auto">
+                <div className="grid grid-cols-12 gap-4 mb-8">
                     <div className="col-span-6">
                         <LabelText text="Birth year"/>
 
                         <YearPickerInput
-                            // label="Pick date"
-                            // placeholder="Pick date"
                             value={birthYear}
-                            onChange={setBirthYear}
-
-                            mx="auto"
-                            maw={400}
+                            onChange={(value) => {
+                                setYearOfBirthAtom(dayjs(value?.toDateString()).year().toString()),
+                                setBirthYear(value)
+                            }}
+                            size="sm"
                             clearable
                             maxDate={new Date()}
                         />
@@ -115,7 +108,7 @@ export default function AllDiagnosis({ token } : { token: string}) {
                         <LabelText text="Gender"/>
                         <ValueLabelSelect
                             data={GenderSelectData}
-                            onChange={(value: any) => setPatientGender(value)}
+                            onChange={(value: any) => {setPatientGender(value), setGenderAtom(value)}}
                         />
                         {patientGender === "" && <ErrorText text='Required' />}
                     </div>
@@ -141,7 +134,7 @@ export default function AllDiagnosis({ token } : { token: string}) {
                         className="bg-blue-400 hover:bg-green-400 px-4 py-2 rounded-lg font-mono text-sm lg:text-base font-semibold"
                         onClick={() => getDiagnoses()}
                     >
-                        Get diagnosis
+                        Get diagnoses
                     </button>
                 </div>
             </SectionCard>
