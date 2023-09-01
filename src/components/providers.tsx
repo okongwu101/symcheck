@@ -185,6 +185,8 @@ export default function Providers({children}: {children: ReactNode}) {
                 autoClose={6000}
               />
             <Provider> {children}</Provider>
+
+            {children}
              
             </MantineProvider>
         

@@ -46,11 +46,11 @@ export default function Description() {
 
 
                         <p className='font-mono text-xs lg:text-sm text-justify mt-4 font-medium'>
-                            SymCHeck provides differential diagnoses based on selected symptoms. The app also recommends specialties that the user can refer to, based on the diagonses, for specialist care.
+                            SymCHeck provides differential diagnoses based on selected symptoms. The app also recommends specialties that the user can refer to, based on the diagnoses, for specialist care.
 
                         </p>
                         <div className='mt-4 font-mono text-xs lg:text-base'>
-                            <span className=' text-orange-400 pr-4'>NB:</span><span>The app uses dummy data.</span>
+                            <span className=' text-orange-400 pr-4'>NB:</span><span>The app provides only <span className='text-sm font-semibold'>guide</span> and uses dummy data. It does not, and <span className='text-sm font-semibold text-rose-300'>can never</span>, replace a doctor.</span>
                         </div>
                         {/* </div> */}
 
