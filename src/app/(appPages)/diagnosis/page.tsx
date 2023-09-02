@@ -14,6 +14,7 @@ export default async function Diagnosis() {
     const hashString = uriHash.toString(CryptoJS.enc.Base64)
 
 
+    // fetch the token and revalidate every 2 hours
     const res = await fetch(`${process.env.AUTH_BASE}`, {
         next: { revalidate: 7200 },
         method: "POST",
