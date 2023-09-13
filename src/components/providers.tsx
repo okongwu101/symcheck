@@ -186,7 +186,7 @@ export default function Providers({children}: {children: ReactNode}) {
               />
             <Provider> {children}</Provider>
 
-            {children}
+       
              
             </MantineProvider>
         

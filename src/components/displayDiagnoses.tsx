@@ -91,20 +91,4 @@ export default function DisplayDiagnoses() {
     );
 }
 
-// const items = [
-//     { id: 1, rank: 1, content: "Item with rank 1" },
-//     { id: 2, rank: 2, content: "Item with rank 2" },
-//     // ... and so on
-//   ];
 
-//   function ColoredElements({ items }) {
-//     return (
-//       <div>
-//         {items.map((item) => (
-//           <div key={item.id} style={{ backgroundColor: colors[(item.rank - 1) % colors.length] }}>
-//             {item.content}
-//           </div>
-//         ))}
-//       </div>
-//     );
-//   }
