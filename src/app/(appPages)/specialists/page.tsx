@@ -27,6 +27,8 @@ export default function GetSpecialistsClient() {
         enabled: diagnosisID !== 0
     })
 
+    console.log('this is specialists', specialists)
+
 
 
     return (
