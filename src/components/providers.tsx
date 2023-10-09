@@ -176,7 +176,8 @@ export default function Providers({children}: {children: ReactNode}) {
     return (
         <>
         <QueryClientProvider client={queryClient}>
-          
+
+          <Provider>
             <MantineProvider withGlobalStyles withNormalizeCSS>
               <Notifications
                 position="bottom-left"
@@ -184,11 +185,14 @@ export default function Providers({children}: {children: ReactNode}) {
                 limit={2}
                 autoClose={6000}
               />
-            <Provider> {children}</Provider>
+              {children}
 
-       
-             
+
+
             </MantineProvider>
+          </Provider>
+          
+            
         
             
         </QueryClientProvider>

@@ -1,32 +1,130 @@
-import DiagnosisDetailsClient from "@/components/diagnosisDetailsClient";
-import { PageTitle } from "@/components/texts";
-import CryptoJS from "crypto-js";
+'use client'
 
-export default async function DiagnosisDetails() {
-
-    // obtain the token for fetch request to the api
-    const uriHash = CryptoJS.HmacMD5(`${process.env.AUTH_BASE}`, `${process.env.NEXT_PUBLIC_PASSWORD}`);
-    const hashString = uriHash.toString(CryptoJS.enc.Base64)
+import { useState } from 'react';
 
 
-    // fetch the token and revalidate every 2 hours
-    const res = await fetch(`${process.env.AUTH_BASE}`, {
-        next: { revalidate: 7200 },
-        method: "POST",
-        headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_USERNAME}:${hashString}`,
-            "Content-Type": "application/json"
-        }
+import { diagnosisIDAtom, tokenAtom } from "@/lib/atoms"
+import { DiagnosisDescriptionInterface } from "@/lib/interfaces"
+import { useQuery } from "@tanstack/react-query"
+import { useAtom } from "jotai"
+import MyAccordion, { AccordionControl, AccordionItem, AccordionPanel } from '@/components/accordion';
+import { PageTitle, LabelText, AccordionPanelText } from '@/components/texts';
+
+
+
+export default function DiagnosisDetailsClient({ token }: { token: string }) {
+
+    // retrieve the diagnosis id
+    const [diagnosisID,] = useAtom(diagnosisIDAtom)
+
+    console.log('diagnosis id', diagnosisID)
+
+    const [value, setValue] = useState<string>("")
+
+    const [newToken,] = useAtom(tokenAtom)
+    console.log('this is new token', newToken)
+
+    // fetch diagnosis details
+
+    const { data: detail } = useQuery<DiagnosisDescriptionInterface>({
+        queryKey: [`${process.env.NEXT_PUBLIC_ISSUES_BASE}${diagnosisID}/info?token=${newToken}&format=json&language=en-gb`],
+        enabled: diagnosisID !== 0
     })
 
-    const data = await res.json()
-    const token = await data.Token
 
 
-    return(
-        <div className="lg:container mx-auto lg:px-52">
+
+    return (
+        <div className='mb-8 lg:container mx-auto lg:px-52'>
+
             <PageTitle text="Diagnosis detail" />
-            <DiagnosisDetailsClient token={token} />
+
+            {
+                detail !== null && detail !== undefined &&
+                <MyAccordion value={value} onChange={(value: string) => setValue(value)}>
+
+                    <AccordionItem value="name">
+                        <AccordionControl>
+                            <LabelText text="Diagnosis" />
+
+                        </AccordionControl>
+                        <AccordionPanel>
+
+                            <AccordionPanelText text={detail.Name} />
+                        </AccordionPanel>
+
+                    </AccordionItem>
+
+
+                    <AccordionItem value="description">
+                        <AccordionControl> <LabelText text="Description" /></AccordionControl>
+                        <AccordionPanel>
+                            <AccordionPanelText text={detail.Description} />
+                        </AccordionPanel>
+
+                    </AccordionItem>
+
+
+                    <AccordionItem value="shortDescription">
+                        <AccordionControl> <LabelText text="Other description" /></AccordionControl>
+                        <AccordionPanel>
+                            <AccordionPanelText text={detail.DescriptionShort} />
+                        </AccordionPanel>
+
+                    </AccordionItem>
+
+
+                    <AccordionItem value="medicalCondition">
+                        <AccordionControl> <LabelText text="Medical condition" /></AccordionControl>
+                        <AccordionPanel>
+                            <AccordionPanelText text={detail.MedicalCondition} />
+                        </AccordionPanel>
+
+                    </AccordionItem>
+
+
+                    <AccordionItem value="synonyms">
+                        <AccordionControl> <LabelText text="Other names" /></AccordionControl>
+                        <AccordionPanel>
+                            <AccordionPanelText text={detail.Synonyms === null ? detail.ProfName : `${detail.ProfName} | ${detail.Synonyms}`} />
+                        </AccordionPanel>
+
+                    </AccordionItem>
+
+
+                    <AccordionItem value="symptoms">
+                        <AccordionControl> <LabelText text="Possible symptoms" /></AccordionControl>
+                        <AccordionPanel>
+                            <AccordionPanelText text={detail.PossibleSymptoms} />
+                        </AccordionPanel>
+
+                    </AccordionItem>
+
+                    <AccordionItem value="treatment">
+                        <AccordionControl> <LabelText text="Treatment description" /></AccordionControl>
+                        <AccordionPanel>
+                            <AccordionPanelText text={detail.TreatmentDescription} />
+                        </AccordionPanel>
+
+                    </AccordionItem>
+
+
+
+
+                </MyAccordion>
+
+            }
+
+
+
+
+
         </div>
     )
 }
+
+
+
+
+
+

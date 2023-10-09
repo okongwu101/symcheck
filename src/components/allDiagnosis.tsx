@@ -4,7 +4,7 @@ import { GenderSelectData } from "@/lib/dataSource/patientGenderDataSource"
 import { LocalMultiSelect, SymptomsInterface, ValueLabelSelect } from "./selectFormComponents"
 import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { allDiagnosisAtom, errorMessageAtom, genderAtom, yearOfBirthAtom } from "@/lib/atoms"
+import { allDiagnosisAtom, errorMessageAtom, genderAtom, tokenAtom, yearOfBirthAtom } from "@/lib/atoms"
 import { useAtom } from "jotai"
 import { YearPickerInput } from '@mantine/dates';
 import axios from "axios"
@@ -25,6 +25,9 @@ export default function AllDiagnosis({ token } : { token: string}) {
     const [, setGenderAtom] = useAtom(genderAtom)
     const [, setYearOfBirthAtom] = useAtom(yearOfBirthAtom)
     const [, setFetchedDiagnoses] = useAtom(allDiagnosisAtom)
+
+    // share token using atom
+    const [, setToken] = useAtom(tokenAtom)
 
  
     /*
@@ -76,6 +79,8 @@ export default function AllDiagnosis({ token } : { token: string}) {
             const allDiag = await res.data
 
             setFetchedDiagnoses(allDiag)
+
+            setToken(token)
         }
     }
     return (
@@ -131,6 +136,7 @@ export default function AllDiagnosis({ token } : { token: string}) {
 
                 <div className="flex justify-end mt-8">
                     <button
+                    type="button"
                         className="bg-blue-400 hover:bg-green-400 px-4 py-2 rounded-lg font-mono text-sm lg:text-base font-semibold"
                         onClick={() => getDiagnoses()}
                     >

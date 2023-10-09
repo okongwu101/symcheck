@@ -18,4 +18,6 @@ export const genderAtom = atom<string>("")
 
 export const yearOfBirthAtom = atom<string>("")
 
+export const tokenAtom = atom<string>("")
+
 
