@@ -16,6 +16,7 @@ export default function Description() {
 
             <div>
                 <button
+                type='button'
                     className=' py-2 px-8 rounded-lg mb-2 bg-orange-50 font-mono font-semibold text-sm lg:text-base '
                     onClick={toggle}
                 >

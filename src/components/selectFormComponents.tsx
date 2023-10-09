@@ -8,13 +8,9 @@ export type SelectItem = {
 
 
 
-type ValueLabelSelectPropsTypes = {
-    data: readonly SelectItem[];
-    value?: any;
-    onChange: (value: string) => void;
-}
 
-export function ValueLabelSelect(props: ValueLabelSelectPropsTypes) {
+
+export function ValueLabelSelect({ ...props }) {
     return (
         <Select
             data={props.data}
@@ -33,26 +29,20 @@ export interface SymptomsInterface {
 }[]
 
 
-type LocalMultiSelectProps = {
-    data: { ID: string; Name: string; }[];
-    onChange: (value: string[]) => void;
-    value?: any[];
-}
-
-export const LocalMultiSelect = (props: LocalMultiSelectProps) => {
+export const LocalMultiSelect = ({ ...props }) => {
     return (
         <>
             <MultiSelect
-                data={(props.data).map((option) => ({
+                data={(props.data).map((option: SymptomsInterface) => ({
                     value: option?.ID,
                     label: option?.Name
                 }))}
                 searchable
                 onChange={props.onChange}
-                nothingFound="Nothing found"
+                nothingFoundMessage="Nothing found"
                 clearable
                 value={props.value}
-                initiallyOpened={false}
+                defaultDropdownOpened={false}
                 size="sm"
                 limit={200}
             />

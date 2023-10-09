@@ -9,6 +9,8 @@ import { useAtom } from "jotai";
 import { ReactNode, useEffect } from "react"
 import { Provider } from "jotai";
 
+import '@mantine/core/styles.css';
+
 export default function Providers({children}: {children: ReactNode}) {
 
     const [errorMessage, setErrorMessage] = useAtom(errorMessageAtom);
@@ -178,7 +180,7 @@ export default function Providers({children}: {children: ReactNode}) {
         <QueryClientProvider client={queryClient}>
 
           <Provider>
-            <MantineProvider withGlobalStyles withNormalizeCSS>
+            <MantineProvider >
               <Notifications
                 position="bottom-left"
                 zIndex={2077}

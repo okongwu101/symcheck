@@ -1,7 +1,6 @@
 'use client'
 
 import { Accordion } from "@mantine/core";
-import { AccordionValue } from "@mantine/core/lib/Accordion/Accordion.types";
 import { ReactNode } from "react";
 
 
