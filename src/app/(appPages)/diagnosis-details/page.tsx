@@ -10,9 +10,9 @@ import { useAtom } from "jotai"
 import MyAccordion, { AccordionControl, AccordionItem, AccordionPanel } from '@/components/accordion';
 import { PageTitle, LabelText, AccordionPanelText } from '@/components/texts';
 
+// { token }: { token: string }
 
-
-export default function DiagnosisDetailsClient({ token }: { token: string }) {
+export default function DiagnosisDetailsClient() {
 
     // retrieve the diagnosis id
     const [diagnosisID,] = useAtom(diagnosisIDAtom)
