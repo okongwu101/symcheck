@@ -17,12 +17,12 @@ export default function DiagnosisDetailsClient() {
     // retrieve the diagnosis id
     const [diagnosisID,] = useAtom(diagnosisIDAtom)
 
-    console.log('diagnosis id', diagnosisID)
+
 
     const [value, setValue] = useState<string>("")
 
     const [newToken,] = useAtom(tokenAtom)
-    console.log('this is new token', newToken)
+
 
     // fetch diagnosis details
 

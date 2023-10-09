@@ -4,8 +4,7 @@ import AllDiagnosis from "@/components/allDiagnosis";
 import Description from "@/components/description";
 import DisplayDiagnoses from "@/components/displayDiagnoses";
 import { PageTitle } from "@/components/texts";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+
 
 
 import CryptoJS from "crypto-js";
@@ -31,7 +30,7 @@ export default async function Diagnosis() {
     const data = await res.json()
      const token = await data.Token
 
-     console.log('token', token)
+   
 
 
 
