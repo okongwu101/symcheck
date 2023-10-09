@@ -22,12 +22,13 @@ export default function GetSpecialistsClient() {
 
 
     // fetch specialists for a disease
-    const { data: specialists } = useQuery<SpecialistsInterface[]>({
+    const { data: specialists, isSuccess } = useQuery<SpecialistsInterface[]>({
         queryKey: [`${process.env.NEXT_PUBLIC_SPECIALIZATION_BASE}token=${newToken}&symptoms=[${diagnosisID}]&gender=${gender}&year_of_birth=${year}&format=json&language=en-gb`],
         enabled: diagnosisID !== 0
     })
 
     console.log('this is specialists', specialists)
+    console.log('this is success', isSuccess)
 
 
 
