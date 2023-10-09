@@ -127,7 +127,7 @@ export default function AllDiagnosis({ token } : { token: string}) {
                         data={symptomsData}
                         // onChange={}
                         onChange={(values: any) => {
-                            setSymptoms((values).map((value: string) => symptomsData.find((item: SymptomsInterface) => item.ID === value)))
+                            setSymptoms((values).map((value: string) => symptomsData.find((item: SymptomsInterface) => String(item.ID) === value)))
                         }}
                         value={symptoms ? symptoms.map((c) => c.ID) : []}
                     />

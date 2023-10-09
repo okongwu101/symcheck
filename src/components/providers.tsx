@@ -10,6 +10,7 @@ import { ReactNode, useEffect } from "react"
 import { Provider } from "jotai";
 
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 
 export default function Providers({children}: {children: ReactNode}) {
 

@@ -34,7 +34,7 @@ export const LocalMultiSelect = ({ ...props }) => {
         <>
             <MultiSelect
                 data={(props.data).map((option: SymptomsInterface) => ({
-                    value: option?.ID,
+                    value: String(option?.ID),
                     label: option?.Name
                 }))}
                 searchable
