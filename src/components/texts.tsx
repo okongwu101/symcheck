@@ -45,7 +45,7 @@ export const AccuracyText = (props: TextPropTypes) => {
 
 export const PageTitle = (props: TextPropTypes) => {
     return(
-        <div className="text-center text-sm font-sans font-semibold my-6">
+        <div className="text-center text-base md:text-xl font-sans font-semibold my-6 underline underline-offset-8 mb-8">
             { props.text}
         </div>
     )
@@ -53,9 +53,17 @@ export const PageTitle = (props: TextPropTypes) => {
 
 export const AccordionPanelText = (props: TextPropTypes) => {
     return(
-        <div className="text-xs font-mono font-semibold tracking-wider px-6 text-left py-4 leading-7">
+        <div className="text-xs font-mono font-semibold tracking-wider px-6 py-4 leading-7 text-justify">
             {props.text}
         </div>
     )
     
+}
+
+export const SectionCardHeading = (props: TextPropTypes) => {
+    return(
+        <div className="text-base font-mono font-semibold tracking-wider mb-8">
+            {props.text}
+        </div>
+    )
 }

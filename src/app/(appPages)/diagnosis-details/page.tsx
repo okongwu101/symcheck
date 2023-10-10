@@ -31,6 +31,9 @@ export default function DiagnosisDetailsClient() {
         enabled: diagnosisID !== 0
     })
 
+    console.log('this is detail', detail)
+    console.log('this is new token', newToken)
+
 
 
 

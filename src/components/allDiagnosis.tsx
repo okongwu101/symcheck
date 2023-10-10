@@ -2,15 +2,15 @@
 
 import { GenderSelectData } from "@/lib/dataSource/patientGenderDataSource"
 import { LocalMultiSelect, SymptomsInterface, ValueLabelSelect } from "./selectFormComponents"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { allDiagnosisAtom, errorMessageAtom, genderAtom, tokenAtom, yearOfBirthAtom } from "@/lib/atoms"
+import { allDiagnosisAtom, diagnosisFetchedAtom, errorMessageAtom, genderAtom, tokenAtom, yearOfBirthAtom } from "@/lib/atoms"
 import { useAtom } from "jotai"
 import { YearPickerInput } from '@mantine/dates';
 import axios from "axios"
 import dayjs from "dayjs"
 import SectionCard from "./sectionCard"
-import { ErrorText, LabelText } from "./texts"
+import { ErrorText, LabelText, SectionCardHeading } from "./texts"
 
 
 
@@ -19,7 +19,7 @@ export default function AllDiagnosis({ token } : { token: string}) {
 
     const [birthYear, setBirthYear] = useState<Date | null>(null);
     const [patientGender, setPatientGender] = useState("")
-    const [symptoms, setSymptoms] = useState<SymptomsInterface[]>()
+    const [symptoms, setSymptoms] = useState<string[]>([])
 
 
     const [, setGenderAtom] = useAtom(genderAtom)
@@ -28,6 +28,14 @@ export default function AllDiagnosis({ token } : { token: string}) {
 
     // share token using atom
     const [, setToken] = useAtom(tokenAtom)
+
+    // track the successful fetching of all diagnosis
+    // use it to control the display of information to user
+    // if search yielded no result.
+    const [, setDiagnosisFetched] = useAtom(diagnosisFetchedAtom)
+
+
+
 
  
     /*
@@ -43,21 +51,11 @@ export default function AllDiagnosis({ token } : { token: string}) {
     const [, setErrorMessage] = useAtom(errorMessageAtom)
 
 
-    // fetch symptoms
     const { data: symptomsData } = useQuery<SymptomsInterface[]>({
-        queryKey: [`${process.env.NEXT_PUBLIC_SYMPTOMS_BASE}token=${token}&format=json&language=en-gb`],
+        queryKey: [`/api/allDiagnosis?token=${token}&format=json&language=en-gb`],
         initialData: [{ ID: "", Name: "" }],
         enabled: token !== ""
     })
-
-
-
-    // get array of symptoms ID
-    let IDArray: string[][] = []
-    if (symptoms !== undefined) {
-        IDArray.push(symptoms.map((s) => s.ID))
-
-    }
 
 
     // Get diagnosis
@@ -68,19 +66,29 @@ export default function AllDiagnosis({ token } : { token: string}) {
         if (patientGender === "") {
             setErrorMessage("Gender is required")
         }
-        if (symptoms === undefined) {
-            setErrorMessage("Symptoms is required")
+        if (symptoms.length === 0) {
+            setErrorMessage("Symptom is required")
         }
 
-        if (birthYear !== null && patientGender !== "" && symptoms !== undefined) {
+        if (birthYear !== null && patientGender !== "" && symptoms.length > 0) {
+
             // fetch dignoses
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_DIAGNOSIS_BASE}symptoms=[${IDArray}]&gender=${patientGender}&year_of_birth=${year}&token=${token}&language=en-gb`)
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_DIAGNOSIS_BASE}symptoms=[${symptoms}]&gender=${patientGender}&year_of_birth=${year}&token=${token}&language=en-gb`)
 
             const allDiag = await res.data
 
             setFetchedDiagnoses(allDiag)
 
             setToken(token)
+
+            setDiagnosisFetched(true)
+
+            // set the atom to false after 2 seconds
+            setTimeout(() => {
+                setDiagnosisFetched(false)
+            }, 500)
+
+           
         }
     }
     return (
@@ -91,6 +99,7 @@ export default function AllDiagnosis({ token } : { token: string}) {
             
 
             <SectionCard>
+                <SectionCardHeading text="Enter your data" />
                 <div className="grid grid-cols-12 gap-4 mb-8">
                     <div className="col-span-6">
                         <LabelText text="Birth year"/>
@@ -125,20 +134,18 @@ export default function AllDiagnosis({ token } : { token: string}) {
                     <LabelText text="Symptoms"/>
                     <LocalMultiSelect
                         data={symptomsData}
-                        // onChange={}
-                        onChange={(values: any) => {
-                            setSymptoms((values).map((value: string) => symptomsData.find((item: SymptomsInterface) => String(item.ID) === value)))
-                        }}
-                        value={symptoms ? symptoms.map((c) => c.ID) : []}
+                        onChange={setSymptoms}
+                        value={symptoms}
                     />
-                    {symptoms === undefined && <ErrorText text='Required' />}
+                    {symptoms.length === 0 && <ErrorText text='Required' />}
                 </div>
 
                 <div className="flex justify-end mt-8">
                     <button
                     type="button"
                         className="bg-blue-400 hover:bg-green-400 px-4 py-2 rounded-lg font-mono text-sm lg:text-base font-semibold"
-                        onClick={() => getDiagnoses()}
+                        // onClick={() => getDiagnoses()}
+                        onClick={getDiagnoses}
                     >
                         Get diagnoses
                     </button>

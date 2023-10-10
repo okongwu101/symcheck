@@ -28,9 +28,7 @@ export default async function Diagnosis() {
     })
 
     const data = await res.json()
-     const token = await data.Token
-
-   
+    const token = await data.Token
 
 
 

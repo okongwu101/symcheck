@@ -17,7 +17,7 @@ export default function Description() {
             <div>
                 <button
                 type='button'
-                    className=' py-2 px-8 rounded-lg mb-2 bg-orange-50 font-mono font-semibold text-sm lg:text-base '
+                    className=' py-2 px-8 rounded-lg mb-2 bg-blue-200 font-mono font-semibold text-sm lg:text-base'
                     onClick={toggle}
                 >
                     Info
@@ -46,12 +46,12 @@ export default function Description() {
                         </div>
 
 
-                        <p className='font-mono text-xs lg:text-sm text-justify mt-4 font-medium'>
+                        <p className='font-mono text-xs lg:text-sm text-justify leading-loose mt-4 font-medium'>
                             SymCHeck provides differential diagnoses based on selected symptoms. The app also recommends specialties that the user can refer to, based on the diagnoses, for specialist care.
 
                         </p>
-                        <div className='mt-4 font-mono text-xs lg:text-base'>
-                            <span className=' text-orange-400 pr-4'>NB:</span><span>The app provides only <span className='text-sm font-semibold'>guide</span> and uses dummy data. It does not, and <span className='text-sm font-semibold text-rose-300'>can never</span>, replace a doctor.</span>
+                        <div className='mt-4 font-mono text-xs lg:text-base leading-loose'>
+                            <span className='text-lg text-orange-400 pr-4'>NB:</span><span>The app provides only <span className='text-sm font-semibold'>guide</span> and uses dummy data. It does not, and <span className='text-lg font-medium text-rose-300'>can never</span>, replace a doctor.</span>
                         </div>
                         {/* </div> */}
 

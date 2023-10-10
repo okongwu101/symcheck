@@ -21,3 +21,8 @@ export const yearOfBirthAtom = atom<string>("")
 export const tokenAtom = atom<string>("")
 
 
+// atom to track when all diagnosis is successfully fetched 
+// in alldiagnosis component
+export const diagnosisFetchedAtom = atom<boolean>(false)
+
+

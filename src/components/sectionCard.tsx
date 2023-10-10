@@ -7,19 +7,19 @@ type CardProps = {
     children: ReactNode;
 }
 
-export default function SectionCard( props:CardProps ) {
+export default function SectionCard(props: CardProps) {
     return (
-     
 
-            <Card
-                shadow="sm"
-                padding="xl"
-                className='border border-rose-200 rounded-lg'
-                onClick={props.onClick}
-            >
-                {props.children}
-            </Card>
 
-    
+        <Card
+            className='border border-rose-200'
+            onClick={props.onClick}
+            shadow="sm"
+            padding="lg"
+            radius="md"
+            withBorder
+        >
+            {props.children}
+        </Card>
     )
 }
