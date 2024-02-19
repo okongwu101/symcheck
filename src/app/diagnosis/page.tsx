@@ -6,7 +6,7 @@ import DisplayDiagnoses from "@/components/displayDiagnoses";
 import { PageTitle } from "@/components/texts";
 import React from "react";
 
-import { HmacMD5 } from "crypto-js";
+// import { HmacMD5 } from "crypto-js";
 
 
 
