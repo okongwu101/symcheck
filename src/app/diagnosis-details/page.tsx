@@ -1,14 +1,12 @@
 'use client'
 
 import { useState } from 'react';
-
-
-import { diagnosisIDAtom, tokenAtom } from "@/lib/atoms"
-import { DiagnosisDescriptionInterface } from "@/lib/interfaces"
-import { useQuery } from "@tanstack/react-query"
-import { useAtom } from "jotai"
-import MyAccordion, { AccordionControl, AccordionItem, AccordionPanel } from '@/components/accordion';
-import { PageTitle, LabelText, AccordionPanelText } from '@/components/texts';
+import { PageTitle } from '@/components/texts';
+import { diagnosisIDAtom, tokenAtom } from "@/lib/atoms";
+import { DiagnosisDescriptionInterface } from "@/lib/interfaces";
+import { Accordion, AccordionItem } from '@nextui-org/react';
+import { useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
 
 // { token }: { token: string }
 
@@ -43,79 +41,31 @@ export default function DiagnosisDetailsClient() {
 
             <PageTitle text="Diagnosis detail" />
 
+
             {
                 detail !== null && detail !== undefined &&
-                <MyAccordion value={value} onChange={(value: string) => setValue(value)}>
-
-                    <AccordionItem value="name">
-                        <AccordionControl>
-                            <LabelText text="Diagnosis" />
-
-                        </AccordionControl>
-                        <AccordionPanel>
-
-                            <AccordionPanelText text={detail.Name} />
-                        </AccordionPanel>
-
+                <Accordion>
+                    <AccordionItem key="description" aria-label="diagnosis description" title="Description">
+                        {detail.Description}
+                    </AccordionItem>
+                    <AccordionItem key="shortDescription" aria-label="diagnosis short description" title="Other description">
+                        {detail.DescriptionShort}
+                    </AccordionItem>
+                    <AccordionItem key="medicalCondition" aria-label="medical condition" title="Medical condition">
+                        {detail.MedicalCondition}
                     </AccordionItem>
 
 
-                    <AccordionItem value="description">
-                        <AccordionControl> <LabelText text="Description" /></AccordionControl>
-                        <AccordionPanel>
-                            <AccordionPanelText text={detail.Description} />
-                        </AccordionPanel>
-
+                    <AccordionItem key="synonyms" aria-label="other names" title="Other names">
+                        {detail.Synonyms === null ? detail.ProfName : `${detail.ProfName} | ${detail.Synonyms}`}
                     </AccordionItem>
-
-
-                    <AccordionItem value="shortDescription">
-                        <AccordionControl> <LabelText text="Other description" /></AccordionControl>
-                        <AccordionPanel>
-                            <AccordionPanelText text={detail.DescriptionShort} />
-                        </AccordionPanel>
-
+                    <AccordionItem key="symptoms" aria-label="possible symptoms" title="Possible symptoms">
+                        {detail.PossibleSymptoms}
                     </AccordionItem>
-
-
-                    <AccordionItem value="medicalCondition">
-                        <AccordionControl> <LabelText text="Medical condition" /></AccordionControl>
-                        <AccordionPanel>
-                            <AccordionPanelText text={detail.MedicalCondition} />
-                        </AccordionPanel>
-
+                    <AccordionItem key="treatment" aria-label="treatment description" title="Treatment description">
+                        {detail.TreatmentDescription}
                     </AccordionItem>
-
-
-                    <AccordionItem value="synonyms">
-                        <AccordionControl> <LabelText text="Other names" /></AccordionControl>
-                        <AccordionPanel>
-                            <AccordionPanelText text={detail.Synonyms === null ? detail.ProfName : `${detail.ProfName} | ${detail.Synonyms}`} />
-                        </AccordionPanel>
-
-                    </AccordionItem>
-
-
-                    <AccordionItem value="symptoms">
-                        <AccordionControl> <LabelText text="Possible symptoms" /></AccordionControl>
-                        <AccordionPanel>
-                            <AccordionPanelText text={detail.PossibleSymptoms} />
-                        </AccordionPanel>
-
-                    </AccordionItem>
-
-                    <AccordionItem value="treatment">
-                        <AccordionControl> <LabelText text="Treatment description" /></AccordionControl>
-                        <AccordionPanel>
-                            <AccordionPanelText text={detail.TreatmentDescription} />
-                        </AccordionPanel>
-
-                    </AccordionItem>
-
-
-
-
-                </MyAccordion>
+                </Accordion>
 
             }
 

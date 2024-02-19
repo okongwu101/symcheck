@@ -6,6 +6,7 @@ import axios from "axios";
 import { ReactNode } from "react"
 import { Provider } from "jotai";
 import NotificationProvider from "./notificationProvider";
+import { NextUIProvider } from "@nextui-org/react";
 
 
 
@@ -42,7 +43,10 @@ export default function Providers({ children }: { children: ReactNode }) {
         <Provider>
 
           <NotificationProvider>
-            {children}
+            <NextUIProvider>
+              {children}
+            </NextUIProvider>
+          
           </NotificationProvider>
 
          
