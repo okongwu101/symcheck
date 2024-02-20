@@ -1,37 +1,50 @@
-'use client'
 
-import { useState } from 'react';
+
 import { PageTitle } from '@/components/texts';
-import { diagnosisIDAtom, tokenAtom } from "@/lib/atoms";
-import { DiagnosisDescriptionInterface } from "@/lib/interfaces";
-import { Accordion, AccordionItem } from '@nextui-org/react';
-import { useQuery } from "@tanstack/react-query";
-import { useAtom } from "jotai";
-
-// { token }: { token: string }
-
-export default function DiagnosisDetailsClient() {
-
-    // retrieve the diagnosis id
-    const [diagnosisID,] = useAtom(diagnosisIDAtom)
+import { getDiagnosisDetail } from '@/lib/dataFetch/diagnosisDetailFetch';
+import { IconChevronLeft, IconHome } from '@tabler/icons-react';
+import CryptoJS from "crypto-js";
+import Link from 'next/link';
+import DiagnosisDetailsClient from './diagnosis-details-client';
 
 
+export default async function DiagnosisDetailsPage({ searchParams }: {
+    searchParams: { [key: string]: string | string[] | undefined }
+}) {
 
-    const [value, setValue] = useState<string>("")
+    // obtain the token for fetch request to the api
+    const uriHash = CryptoJS.HmacMD5(`${process.env.AUTH_BASE}`, `${process.env.NEXT_PUBLIC_PASSWORD}`);
+    const hashString = uriHash.toString(CryptoJS.enc.Base64)
 
-    const [newToken,] = useAtom(tokenAtom)
 
-
-    // fetch diagnosis details
-
-    const { data: detail } = useQuery<DiagnosisDescriptionInterface>({
-        // queryKey: [`${process.env.NEXT_PUBLIC_ISSUES_BASE}${diagnosisID}/info?token=${newToken}&format=json&language=en-gb`],
-        queryKey: [`/api/diagnosisInfo?diagnosisID=${diagnosisID}&token=${newToken}`],
-        enabled: diagnosisID !== 0
+    // fetch the token and revalidate every 2 hours
+    const res = await fetch(`${process.env.AUTH_BASE}`, {
+        next: { revalidate: 7200 },
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_USERNAME}:${hashString}`,
+            "Content-Type": "application/json"
+        }
     })
 
-    console.log('this is detail', detail)
-    // console.log('this is new token', newToken)
+    const data = await res.json()
+    const token = await data.Token
+
+
+
+    // retrieve the diagnosis id
+    const search = searchParams.diagnosisId
+
+    let diagnosisID: string = ""
+    if (!!search && typeof search === "string") {
+        diagnosisID = search
+    }
+
+
+
+    const detail = await getDiagnosisDetail(diagnosisID, token)
+
+
 
 
 
@@ -39,40 +52,49 @@ export default function DiagnosisDetailsClient() {
     return (
         <div className='mb-8 lg:container mx-auto lg:px-52'>
 
+            <div className='flex justify-start flex-row items-center gap-4 ml-4 mt-4 mb-6'>
+
+                <div>
+                    <Link href="/diagnosis">
+                    <IconHome />
+                    </Link>
+                </div>
+
+                <div>
+                    <Link href={{
+                        pathname: "/display-diagnoses",
+                        query: {
+                            symptoms: searchParams.symptoms,
+                            gender: searchParams.gender,
+                            year: searchParams.year
+                        }
+                    }}>
+                        <IconChevronLeft />
+                    </Link>
+                </div>
+
+            </div>
+
             <PageTitle text="Diagnosis detail" />
 
 
-            {
-                detail !== null && detail !== undefined &&
-                <Accordion>
-                    <AccordionItem key="description" aria-label="diagnosis description" title="Description">
-                        {detail.Description}
-                    </AccordionItem>
-                    <AccordionItem key="shortDescription" aria-label="diagnosis short description" title="Other description">
-                        {detail.DescriptionShort}
-                    </AccordionItem>
-                    <AccordionItem key="medicalCondition" aria-label="medical condition" title="Medical condition">
-                        {detail.MedicalCondition}
-                    </AccordionItem>
+                <DiagnosisDetailsClient detail={detail} />
 
 
-                    <AccordionItem key="synonyms" aria-label="other names" title="Other names">
-                        {detail.Synonyms === null ? detail.ProfName : `${detail.ProfName} | ${detail.Synonyms}`}
-                    </AccordionItem>
-                    <AccordionItem key="symptoms" aria-label="possible symptoms" title="Possible symptoms">
-                        {detail.PossibleSymptoms}
-                    </AccordionItem>
-                    <AccordionItem key="treatment" aria-label="treatment description" title="Treatment description">
-                        {detail.TreatmentDescription}
-                    </AccordionItem>
-                </Accordion>
-
-            }
-
-
-
-
-
+            <div className="flex justify-end mt-6 mr-4">
+                <Link href={{
+                    pathname: "/display-diagnoses",
+                    query: {
+                        symptoms: searchParams.symptoms,
+                        gender: searchParams.gender,
+                        year: searchParams.year
+                    }
+                }}
+                    className="bg-sky-950 py-2 px-4 rounded-lg text-white font-sans text-sm md:text-base"
+                >
+                    Back
+                </Link>
+            </div>
         </div>
     )
 }

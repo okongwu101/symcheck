@@ -1,8 +1,5 @@
 'use client'
 
-import { allDiagnosisAtom } from "@/lib/atoms";
-import { DiagnosisInterface } from "@/lib/interfaces";
-import { useAtom } from "jotai";
 
 
 type TextPropTypes = {

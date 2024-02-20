@@ -2,7 +2,6 @@
 
 import AllDiagnosis from "@/components/allDiagnosis";
 import Description from "@/components/description";
-import DisplayDiagnoses from "@/components/displayDiagnoses";
 import { PageTitle } from "@/components/texts";
 import React from "react";
 
@@ -11,6 +10,7 @@ import React from "react";
 
 
 import CryptoJS from "crypto-js";
+import { getSymptoms } from "@/lib/dataFetch/symptomsFetch";
 
 
 
@@ -21,9 +21,9 @@ export default async function Diagnosis() {
 
     // obtain the token for fetch request to the api
     const uriHash = CryptoJS.HmacMD5(`${process.env.AUTH_BASE}`, `${process.env.NEXT_PUBLIC_PASSWORD}`);
-    // const uriHash = HmacMD5(`${process.env.AUTH_BASE}`, `${process.env.NEXT_PUBLIC_PASSWORD}`);
-    // const uriHash = CryptoJS
     const hashString = uriHash.toString(CryptoJS.enc.Base64)
+
+   
 
 
 
@@ -41,6 +41,14 @@ export default async function Diagnosis() {
     const token = await data.Token
 
 
+    // fetch symptoms
+    const symptomsData = await getSymptoms(token)
+
+ 
+
+   
+
+
 
 
     return (
@@ -49,12 +57,10 @@ export default async function Diagnosis() {
             <PageTitle text="Diagnosis checker" />
             <Description />
 
-            <div>
-                <AllDiagnosis token={token} />
-            </div>
+          
 
             <div>
-                <DisplayDiagnoses />
+                <AllDiagnosis symptomsData={symptomsData} />
             </div>
 
             <div className="mt-16"></div>

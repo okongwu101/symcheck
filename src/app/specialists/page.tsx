@@ -1,39 +1,98 @@
-'use client'
 
-import { diagnosisIDAtom, genderAtom, tokenAtom, yearOfBirthAtom } from "@/lib/atoms"
-import { SpecialistsInterface } from "@/lib/interfaces"
-import { useQuery } from "@tanstack/react-query"
-import { useAtom } from "jotai"
-import { Card } from "@mantine/core"
+
 import SectionCard from "@/components/sectionCard"
-import { PageTitle, LabelText, ValuesText } from "@/components/texts"
+import { LabelText, PageTitle, ValuesText } from "@/components/texts"
+import { getSpecialists } from "@/lib/dataFetch/specialistsFetch"
+import { Card } from "@mantine/core"
+import { IconChevronLeft, IconHome } from "@tabler/icons-react"
+import CryptoJS from "crypto-js"
+import Link from "next/link"
 
 
 
-export default function GetSpecialistsClient() {
-
-    // retrieve the diagnosis id
-    const [diagnosisID,] = useAtom(diagnosisIDAtom)
-    const [gender,] = useAtom(genderAtom)
-    const [year,] = useAtom(yearOfBirthAtom)
-
-    // get token via jotai
-    const [newToken,] = useAtom(tokenAtom)
+export default async function GetSpecialistsClient({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
 
 
-    // fetch specialists for a disease
-    const { data: specialists, isSuccess } = useQuery<SpecialistsInterface[]>({
-        queryKey: [`${process.env.NEXT_PUBLIC_SPECIALIZATION_BASE}token=${newToken}&symptoms=[${diagnosisID}]&gender=${gender}&year_of_birth=${year}&format=json&language=en-gb`],
-        enabled: diagnosisID !== 0
+
+
+    // obtain the token for fetch request to the api
+    const uriHash = CryptoJS.HmacMD5(`${process.env.AUTH_BASE}`, `${process.env.NEXT_PUBLIC_PASSWORD}`);
+    const hashString = uriHash.toString(CryptoJS.enc.Base64)
+
+
+    // fetch the token and revalidate every 2 hours
+    const res = await fetch(`${process.env.AUTH_BASE}`, {
+        next: { revalidate: 7200 },
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_USERNAME}:${hashString}`,
+            "Content-Type": "application/json"
+        }
     })
 
-    console.log('this is specialists', specialists)
-    console.log('this is success', isSuccess)
+    const data = await res.json()
+    const token = await data.Token
 
+
+
+// retrieve the fetch params from url
+    const symptomsParams = searchParams.symptoms
+    const genderParams = searchParams.gender
+    const yearParam = searchParams.year
+
+    let finalSymptomsParams: string[] = [""]
+
+    if (typeof symptomsParams === "string") {
+        finalSymptomsParams = [(symptomsParams)]
+    }
+
+    if (typeof symptomsParams === "object") {
+        finalSymptomsParams = symptomsParams?.map(s => {
+            return (s)
+        })
+    }
+
+    let finalGenderParams: string = ""
+    if (!!genderParams && typeof genderParams !== "object") {
+        finalGenderParams = genderParams
+    }
+
+    let finalYearParams: string = ""
+    if (!!yearParam && typeof yearParam !== "object") {
+        finalYearParams = yearParam
+    }
+
+
+
+    const specialists = await getSpecialists(token, finalSymptomsParams, finalGenderParams, finalYearParams)
+
+ 
 
 
     return (
         <div className="px-4 mt-8 lg:container mx-auto lg:px-52">
+            <div className='flex justify-start flex-row items-center gap-4 ml-4 mt-4 mb-6'>
+
+                <div>
+                    <Link href="/diagnosis">
+                        <IconHome />
+                    </Link>
+                </div>
+
+                <div>
+                    <Link href={{
+                        pathname: "/display-diagnoses",
+                        query: {
+                            symptoms: searchParams.symptoms,
+                            gender: searchParams.gender,
+                            year: searchParams.year
+                        }
+                    }}>
+                        <IconChevronLeft />
+                    </Link>
+                </div>
+
+            </div>
             <PageTitle text="Recommended specialists" />
             {
                 specialists !== undefined && specialists.length !== 0 &&
@@ -78,7 +137,20 @@ export default function GetSpecialistsClient() {
                 </SectionCard>
             }
 
-
+            <div className="flex justify-end mt-6 mr-4">
+                <Link href={{
+                    pathname: "/display-diagnoses",
+                    query: {
+                        symptoms: searchParams.symptoms,
+                        gender: searchParams.gender,
+                        year: searchParams.year
+                    }
+                }}
+                className="bg-sky-950 py-2 px-4 rounded-lg text-white font-sans text-sm md:text-base"
+                >
+                    Back
+                </Link>
+            </div>
 
         </div>
     )
