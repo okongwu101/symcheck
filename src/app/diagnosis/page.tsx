@@ -6,19 +6,20 @@ import { PageTitle } from "@/components/texts";
 import React from "react";
 import CryptoJS from "crypto-js";
 import { getSymptoms } from "@/lib/dataFetch/symptomsFetch";
+import { SymptomsInterface } from "@/components/selectFormComponents";
 
 
 
 
 export default async function Diagnosis() {
 
-    
+
 
     // obtain the token for fetch request to the api
     const uriHash = CryptoJS.HmacMD5(`${process.env.NEXT_PUBLIC_AUTH_BASE}`, `${process.env.NEXT_PUBLIC_PASSWORD}`);
     const hashString = uriHash.toString(CryptoJS.enc.Base64)
 
-   
+
 
 
 
@@ -38,12 +39,13 @@ export default async function Diagnosis() {
 
 
     // fetch symptoms
-    const symptomsData = await getSymptoms(token)
 
- 
 
-   
+    let symptomsData: SymptomsInterface[] = []
 
+    if (!!token) {
+        symptomsData = await getSymptoms(token)
+    }
 
 
 
@@ -53,7 +55,7 @@ export default async function Diagnosis() {
             <PageTitle text="Diagnosis checker" />
             <Description />
 
-          
+
 
             <div>
                 <AllDiagnosis symptomsData={symptomsData} />

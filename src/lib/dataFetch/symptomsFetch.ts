@@ -1,4 +1,6 @@
-export async function getSymptoms(token: string) {
+import { SymptomsInterface } from "@/components/selectFormComponents";
+
+export async function getSymptoms(token: string): Promise<SymptomsInterface[]> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SYMPTOMS_BASE}token=${token}&format=json&language=en-gb`
   );

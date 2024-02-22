@@ -1,8 +1,10 @@
 
 
+import NoFindingPrompt from "@/components/noFindingPrompt"
 import SectionCard from "@/components/sectionCard"
 import { LabelText, PageTitle, ValuesText } from "@/components/texts"
 import { getSpecialists } from "@/lib/dataFetch/specialistsFetch"
+import { SpecialistsInterface } from "@/lib/interfaces"
 import { Card } from "@mantine/core"
 import { IconChevronLeft, IconHome } from "@tabler/icons-react"
 import CryptoJS from "crypto-js"
@@ -64,10 +66,18 @@ export default async function GetSpecialistsClient({ searchParams }: { searchPar
 
 
 
-    const specialists = await getSpecialists(token, finalSymptomsParams, finalGenderParams, finalYearParams)
+    let specialists: SpecialistsInterface[] = []
+
+    if (!!token) {
+        specialists = await getSpecialists(token, finalSymptomsParams, finalGenderParams, finalYearParams)
+    }
 
  
-
+    if (specialists.length === 0) {
+        return (
+            <NoFindingPrompt />
+        )
+    }
 
     return (
         <div className="px-4 mt-8 lg:container mx-auto lg:px-52">
