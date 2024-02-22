@@ -7,7 +7,7 @@ export async function getSpecialists(
   year: string
 ): Promise<SpecialistsInterface[]> {
   const res = await fetch(
-    `${process.env.SPECIALIZATION_BASE}token=${token}&symptoms=[${symptoms}]&gender=${gender}&year_of_birth=${year}&format=json&language=en-gb`
+    `${process.env.NEXT_PUBLIC_SPECIALIZATION_BASE}token=${token}&symptoms=[${symptoms}]&gender=${gender}&year_of_birth=${year}&format=json&language=en-gb`
   );
 
   if (!res.ok) {

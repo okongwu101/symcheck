@@ -1,4 +1,5 @@
 
+import NoFindingPrompt from "@/components/noFindingPrompt";
 import SectionCard from "@/components/sectionCard";
 import { LabelText, PageTitle, ValuesText } from "@/components/texts";
 import { getDiagnoses } from "@/lib/dataFetch/diagnosesFetch";
@@ -10,12 +11,12 @@ import Link from "next/link";
 export default async function DisplayDiagnoses({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
 
     // obtain the token for fetch request to the api
-    const uriHash = CryptoJS.HmacMD5(`${process.env.AUTH_BASE}`, `${process.env.NEXT_PUBLIC_PASSWORD}`);
+    const uriHash = CryptoJS.HmacMD5(`${process.env.NEXT_PUBLIC_AUTH_BASE}`, `${process.env.NEXT_PUBLIC_PASSWORD}`);
     const hashString = uriHash.toString(CryptoJS.enc.Base64)
 
 
     // fetch the token and revalidate every 2 hours
-    const res = await fetch(`${process.env.AUTH_BASE}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_AUTH_BASE}`, {
         next: { revalidate: 7200 },
         method: "POST",
         headers: {
@@ -62,6 +63,12 @@ export default async function DisplayDiagnoses({ searchParams }: { searchParams:
 
     // fetch diagnosis for display
     const diagnoses = await getDiagnoses(finalSymptomsParams, finalGenderParams, finalYearParams, token)
+
+   if (diagnoses.length === 0) {
+    return(
+        <NoFindingPrompt />
+    )
+   }
 
 
 

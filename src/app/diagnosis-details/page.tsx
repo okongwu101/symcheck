@@ -13,12 +13,12 @@ export default async function DiagnosisDetailsPage({ searchParams }: {
 }) {
 
     // obtain the token for fetch request to the api
-    const uriHash = CryptoJS.HmacMD5(`${process.env.AUTH_BASE}`, `${process.env.NEXT_PUBLIC_PASSWORD}`);
+    const uriHash = CryptoJS.HmacMD5(`${process.env.NEXT_PUBLIC_AUTH_BASE}`, `${process.env.NEXT_PUBLIC_PASSWORD}`);
     const hashString = uriHash.toString(CryptoJS.enc.Base64)
 
 
     // fetch the token and revalidate every 2 hours
-    const res = await fetch(`${process.env.AUTH_BASE}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_AUTH_BASE}`, {
         next: { revalidate: 7200 },
         method: "POST",
         headers: {

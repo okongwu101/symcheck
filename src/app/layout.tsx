@@ -5,7 +5,6 @@ import { Inter } from 'next/font/google'
 import { ReactNode } from 'react'
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
-import 'react-toastify/dist/ReactToastify.css';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 
 

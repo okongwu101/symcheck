@@ -6,7 +6,7 @@ export async function getDiagnosisDetail(
 ): Promise<DiagnosisDescriptionInterface> {
  const res = await fetch(
    //   `${process.env.NEXT_PUBLIC_SYMPTOMS_BASE}token=${token}&format=json&language=en-gb`
-   `${process.env.ISSUES_BASE}${diagnosisID}/info?token=${token}&format=json&language=en-gb`
+   `${process.env.NEXT_PUBLIC_ISSUES_BASE}${diagnosisID}/info?token=${token}&format=json&language=en-gb`
  );
 
 
