@@ -3,6 +3,7 @@ import NoFindingPrompt from "@/components/noFindingPrompt";
 import SectionCard from "@/components/sectionCard";
 import { LabelText, PageTitle, ValuesText } from "@/components/texts";
 import { getDiagnoses } from "@/lib/dataFetch/diagnosesFetch";
+import { DiagnosisInterface } from "@/lib/interfaces";
 import { Card } from "@nextui-org/react";
 import { IconHome } from '@tabler/icons-react';
 import CryptoJS from "crypto-js";
@@ -62,13 +63,17 @@ export default async function DisplayDiagnoses({ searchParams }: { searchParams:
 
 
     // fetch diagnosis for display
-    const diagnoses = await getDiagnoses(finalSymptomsParams, finalGenderParams, finalYearParams, token)
 
-   if (diagnoses.length === 0) {
-    return(
-        <NoFindingPrompt />
-    )
-   }
+    let diagnoses: DiagnosisInterface[] = []
+    if (!!token) {
+        diagnoses = await getDiagnoses(finalSymptomsParams, finalGenderParams, finalYearParams, token)
+    }
+
+    if (diagnoses.length === 0) {
+        return (
+            <NoFindingPrompt />
+        )
+    }
 
 
 
