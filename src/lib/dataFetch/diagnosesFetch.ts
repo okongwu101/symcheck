@@ -1,6 +1,13 @@
+"use server";
+
 import { DiagnosisInterface } from "../interfaces";
 
-export async function getDiagnoses(symptoms: number[], gender: string, year: string, token: string): Promise<DiagnosisInterface[]> {
+export async function getDiagnoses(
+  symptoms: number[],
+  gender: string,
+  year: string,
+  token: string
+): Promise<DiagnosisInterface[]> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_DIAGNOSIS_BASE}symptoms=[${symptoms}]&gender=${gender}&year_of_birth=${year}&token=${token}&language=en-gb`
   );

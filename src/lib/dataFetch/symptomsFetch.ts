@@ -1,3 +1,5 @@
+'use server'
+
 import { SymptomsInterface } from "@/components/selectFormComponents";
 
 export async function getSymptoms(token: string): Promise<SymptomsInterface[]> {

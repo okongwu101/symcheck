@@ -1,3 +1,5 @@
+"use server";
+
 import { SpecialistsInterface } from "../interfaces";
 
 export async function getSpecialists(
